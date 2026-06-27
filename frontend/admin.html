@@ -241,9 +241,10 @@
             alan.innerHTML = veriler.length ? "" : "<p>Henüz fotoğraf yüklenmemiş.</p>";
 
             veriler.forEach(f => {
+                // Burada API_URL ön ekini kaldırdık, çünkü Cloudinary doğrudan tam URL veriyor.
                 alan.innerHTML += `
                     <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 flex flex-col">
-                        <img src="${API_URL}${f.url}" class="h-32 w-full object-cover">
+                        <img src="${f.url}" class="h-32 w-full object-cover">
                         <div class="p-3 text-center flex-1 flex flex-col justify-between">
                             <div>
                                 <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded font-bold">${f.bolum === 'slider' ? 'Slider' : 'Biz Kimiz'}</span>
