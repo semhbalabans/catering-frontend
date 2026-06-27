@@ -16,35 +16,35 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* --- SİNEMATİK VE ÇOK YAVAŞ ANİMASYONLAR --- */
+        /* --- PREMİUM / ÇOK YAVAŞ ANİMASYONLAR --- */
         
-        /* 1. Yavaşça Görünme (Fade In) */
-        .anim-fade-fast { opacity: 0; transition: opacity 1.8s ease-out; }
-        
-        /* 2. Ekstra Gecikmeli Yumuşak Çıkış - Alt Başlık için */
-        .anim-fade-delayed { opacity: 0; transform: translateY(10px); transition: all 1.8s ease-out 0.8s; }
+        /* 1. Çok Yavaş Yazı Görünümü (3 Saniye) */
+        .anim-fade-text { opacity: 0; transition: opacity 3s ease-out; }
+        .anim-fade-text-delayed { opacity: 0; transform: translateY(10px); transition: all 3s ease-out 0.5s; }
 
-        /* 3. Çok Yavaş Soldan Sağa Açılma (Wipe Effect) */
-        .anim-wipe { clip-path: inset(0 100% 0 0); transition: clip-path 2.5s cubic-bezier(0.25, 1, 0.5, 1) 0.5s; }
+        /* 2. Çok Yavaş Fotoğraf Görünümü (3.5 Saniye) */
+        .anim-fade-image { opacity: 0; filter: blur(4px); transition: opacity 3.5s ease-out, filter 3.5s ease-out; }
 
-        /* 4. Yavaşça Kayarak Gelme (Menü Kartları) */
-        .anim-slide-card { transform: translateX(-30px); opacity: 1; transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        /* 3. Çok Yavaş Blok Kayması (2.5 Saniye) */
+        .anim-slide-card { transform: translateX(-30px); opacity: 0; transition: transform 2.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 2.5s ease-out; }
+        .anim-slide-up-solid { transform: translateY(40px); opacity: 0; transition: transform 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, opacity 2.5s ease-out 0.3s; }
 
-        /* 5. Yavaşça Aşağıdan Gelmesi (Sipariş Bloğu) */
-        .anim-slide-up-solid { transform: translateY(40px); opacity: 1; transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s; }
+        /* 4. Kelime Kelime Çıkış İçin CSS Altyapısı */
+        .word-wrap span { display: inline-block; opacity: 0; transform: translateX(-10px); transition: opacity 1.5s ease-out, transform 1.5s ease-out; }
 
-        /* EKRANA GİRDİĞİNDE DEVREYE GİRECEK TETİKLEYİCİLER */
-        .ekranda .anim-fade-fast { opacity: 1; }
-        .ekranda .anim-fade-delayed { opacity: 1; transform: translateY(0); }
-        .ekranda .anim-wipe { clip-path: inset(0 0 0 0); }
-        .ekranda .anim-slide-card { transform: translateX(0); }
-        .ekranda .anim-slide-up-solid { transform: translateY(0); }
+        /* --- EKRANA GİRDİĞİNDE TETİKLENENLER --- */
+        .ekranda .anim-fade-text { opacity: 1; }
+        .ekranda .anim-fade-text-delayed { opacity: 1; transform: translateY(0); }
+        .ekranda .anim-fade-image { opacity: 1; filter: blur(0); }
+        .ekranda .anim-slide-card { transform: translateX(0); opacity: 1; }
+        .ekranda .anim-slide-up-solid { transform: translateY(0); opacity: 1; }
+        .ekranda .word-wrap span { opacity: 1; transform: translateX(0); }
     </style>
 </head>
 
 <body class="font-sans antialiased text-gray-800 m-0 overflow-hidden h-screen bg-gray-100" onload="sayfaYuklendi()">
 
-    <main class="h-screen w-full overflow-y-auto snap-y snap-proximity scroll-smooth no-scrollbar">
+    <main class="h-screen w-full overflow-y-auto snap-y snap-mandatory scroll-smooth no-scrollbar">
 
         <section id="hosgeldiniz" class="min-h-screen w-full snap-start bg-gulKurusu flex flex-col justify-center items-center py-20 px-8 text-center relative overflow-hidden gorsel-section">
             <div class="absolute top-6 right-8 flex gap-4 font-bold text-gray-700 z-10">
@@ -53,10 +53,10 @@
                 <button onclick="diliDegistir('nl')" class="hover:text-turuncu transition">NL</button>
             </div>
 
-            <h1 id="dinamik_ana_baslik" class="anim-fade-fast text-5xl md:text-7xl font-bold mb-6 text-gray-900 mt-12">Yükleniyor...</h1>
-            <p id="dinamik_alt_baslik" class="anim-fade-delayed text-xl md:text-2xl mb-8 max-w-2xl">Yükleniyor...</p>
+            <h1 id="dinamik_ana_baslik" class="anim-fade-text text-5xl md:text-7xl font-bold mb-6 text-gray-900 mt-12">Yükleniyor...</h1>
+            <p id="dinamik_alt_baslik" class="anim-fade-text-delayed text-xl md:text-2xl mb-8 max-w-2xl">Yükleniyor...</p>
 
-            <div class="anim-fade-fast relative w-full max-w-4xl h-64 md:h-96 group">
+            <div class="anim-fade-image relative w-full max-w-4xl h-64 md:h-96 group">
                 <button onclick="sliderKaydir(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-turuncu rounded-full w-12 h-12 flex items-center justify-center z-20 shadow-lg text-xl font-bold transition">❮</button>
                 <div id="sliderAlani" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar w-full h-full rounded-2xl shadow-xl bg-gray-300 relative z-10"></div>
                 <button onclick="sliderKaydir(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-turuncu rounded-full w-12 h-12 flex items-center justify-center z-20 shadow-lg text-xl font-bold transition">❯</button>
@@ -66,19 +66,19 @@
         </section>
 
         <section id="hakkimda" class="min-h-screen w-full snap-start bg-tasGrisi flex flex-col justify-center items-center py-20 px-8 text-center gorsel-section overflow-hidden">
-            <h2 data-i18n="ben_kimim" class="anim-fade-fast text-4xl md:text-5xl font-bold mb-8 text-white">Ben Kimim?</h2>
+            <h2 data-i18n="ben_kimim" class="anim-fade-text text-4xl md:text-5xl font-bold mb-8 text-white">Ben Kimim?</h2>
             
-            <p id="dinamik_hakkimda" class="anim-wipe text-lg md:text-xl max-w-3xl leading-relaxed text-gray-100">Yükleniyor...</p>
-            <div id="bizKimizFotoAlani" class="anim-fade-fast mt-12 max-w-3xl w-full"></div>
+            <p id="dinamik_hakkimda" class="word-wrap text-lg md:text-xl max-w-3xl leading-relaxed text-gray-100">Yükleniyor...</p>
+            <div id="bizKimizFotoAlani" class="anim-fade-image mt-12 max-w-3xl w-full"></div>
         </section>
 
         <section id="menu" class="min-h-screen w-full snap-start bg-adacayi flex flex-col justify-start items-center py-20 px-8 gorsel-section overflow-hidden">
-            <h2 data-i18n="menumuz" class="anim-fade-fast text-4xl md:text-5xl font-bold mb-12 text-white">Menümüz</h2>
+            <h2 data-i18n="menumuz" class="anim-fade-text text-4xl md:text-5xl font-bold mb-12 text-white">Menümüz</h2>
             <div id="dinamikMenuAlani" class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl pb-12"></div>
         </section>
 
         <section id="siparis" class="min-h-screen w-full snap-start bg-turuncu flex flex-col justify-start items-center py-20 px-8 gorsel-section overflow-hidden">
-            <h2 data-i18n="siparis_olustur" class="anim-fade-fast text-4xl md:text-5xl font-bold mb-8 text-white">Sipariş Oluştur</h2>
+            <h2 data-i18n="siparis_olustur" class="anim-fade-text text-4xl md:text-5xl font-bold mb-8 text-white">Sipariş Oluştur</h2>
 
             <form id="siparisFormu" class="anim-slide-up-solid w-full max-w-2xl bg-white p-8 rounded-2xl shadow-2xl flex flex-col gap-4">
                 <div><label data-i18n="isim_etiket" class="block font-bold mb-2">İsim Soyisim</label><input type="text" id="isim" data-i18n-ph="isim_ph" class="w-full p-3 border rounded-lg"></div>
@@ -150,10 +150,11 @@
         function animasyonGozlemcisiniBaslat() {
             const gozlemci = new IntersectionObserver((girdiler) => {
                 girdiler.forEach(girdi => {
+                    // Yüzde 30'u göründüğünde kilitlenmeyi ve animasyonları başlat
                     if (girdi.isIntersecting) girdi.target.classList.add('ekranda');
                     else girdi.target.classList.remove('ekranda');
                 });
-            }, { threshold: 0.15 }); // %15 görününce tetikle (daha erken başlasın)
+            }, { threshold: 0.3 });
             document.querySelectorAll('.gorsel-section').forEach(sec => gozlemci.observe(sec));
         }
 
@@ -178,7 +179,7 @@
                 const baslik = m[`baslik_${aktifDil}`]; const icerik = m[`icerik_${aktifDil}`];
                 if (!baslik || !icerik) return;
                 alan.innerHTML += `
-                    <div class="anim-slide-card bg-white p-6 rounded-xl shadow-lg" style="transition-delay: ${index * 0.25}s">
+                    <div class="anim-slide-card bg-white p-6 rounded-xl shadow-lg" style="transition-delay: ${index * 0.3}s">
                         <h3 class="text-2xl font-bold text-turuncu mb-4">${baslik}</h3>
                         <ul class="space-y-2">${icerik.map(y => `<li>${y}</li>`).join('')}</ul>
                     </div>`;
@@ -192,8 +193,19 @@
 
             document.getElementById('dinamik_ana_baslik').textContent = siteAyarlari[`ana_baslik_${dilKodu}`] || "Başlık Yükleniyor...";
             document.getElementById('dinamik_alt_baslik').textContent = siteAyarlari[`alt_baslik_${dilKodu}`] || "Alt başlık yükleniyor...";
-            document.getElementById('dinamik_hakkimda').textContent = siteAyarlari[`hakkimda_${dilKodu}`] || "Metin yükleniyor...";
             
+            // --- KELİME KELİME YÜKLEME MANTIĞI ---
+            const hakkimdaMetin = siteAyarlari[`hakkimda_${dilKodu}`] || "Metin yükleniyor...";
+            const kelimeler = hakkimdaMetin.split(" ");
+            
+            // Her kelimeyi ayrı bir span içine alıp sırayla gecikme (delay) veriyoruz
+            const kelimeHTML = kelimeler.map((kelime, index) => {
+                return `<span style="transition-delay: ${0.3 + (index * 0.08)}s">${kelime}</span> `;
+            }).join("");
+            
+            document.getElementById('dinamik_hakkimda').innerHTML = kelimeHTML;
+            // ------------------------------------
+
             const num = siteAyarlari.telefon || "+31 6 00000000";
             document.getElementById('dinamik_telefon').textContent = num;
             document.getElementById('dinamik_telefon').href = `tel:${num.replace(/\s+/g, '')}`;
