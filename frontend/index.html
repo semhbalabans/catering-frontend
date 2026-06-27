@@ -160,14 +160,16 @@
             }
             alan.innerHTML = "";
             fotolar.forEach(f => {
-                alan.innerHTML += `<img src="${API_URL}${f.url}" class="snap-center shrink-0 w-full h-full object-contain">`;
+                // Sadece f.url kullanıyoruz (Cloudinary tam URL veriyor)
+                alan.innerHTML += `<img src="${f.url}" class="snap-center shrink-0 w-full h-full object-contain">`;
             });
         }
 
         function bizKimizFotolariCiz(fotolar) {
             const alan = document.getElementById("bizKimizFotoAlani");
             if (fotolar.length > 0) {
-                alan.innerHTML = `<img src="${API_URL}${fotolar[0].url}" class="w-full h-auto rounded-2xl shadow-xl">`;
+                // Sadece fotolar[0].url kullanıyoruz (Cloudinary tam URL veriyor)
+                alan.innerHTML = `<img src="${fotolar[0].url}" class="w-full h-auto rounded-2xl shadow-xl">`;
             }
         }
 
