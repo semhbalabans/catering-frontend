@@ -7,9 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            theme: {
-                extend: { colors: { turuncu: '#FF6F00', gulKurusu: '#E8D4D6', tasGrisi: '#B8B2A7', adacayi: '#A8B8A2' } }
-            }
+            theme: { extend: { colors: { turuncu: '#FF6F00', gulKurusu: '#E8D4D6', tasGrisi: '#B8B2A7', adacayi: '#A8B8A2' } } }
         }
     </script>
 </head>
@@ -22,10 +20,11 @@
 
     <div class="container mx-auto p-8">
 
-        <div class="flex gap-4 border-b-2 border-gray-300 mb-8 pb-2">
-            <button onclick="sekmeDegistir('siparislerTab')" id="btn_siparislerTab" class="text-xl font-bold text-turuncu border-b-4 border-turuncu px-4 py-2">📦 Siparişler</button>
-            <button onclick="sekmeDegistir('menulerTab')" id="btn_menulerTab" class="text-xl font-bold text-gray-500 hover:text-turuncu px-4 py-2">🍽️ Menü Yönetimi</button>
-            <button onclick="sekmeDegistir('galeriTab')" id="btn_galeriTab" class="text-xl font-bold text-gray-500 hover:text-turuncu px-4 py-2">🖼️ Galeri Yönetimi</button>
+        <div class="flex gap-4 border-b-2 border-gray-300 mb-8 pb-2 overflow-x-auto">
+            <button onclick="sekmeDegistir('siparislerTab')" id="btn_siparislerTab" class="text-xl font-bold text-turuncu border-b-4 border-turuncu px-4 py-2 whitespace-nowrap">📦 Siparişler</button>
+            <button onclick="sekmeDegistir('menulerTab')" id="btn_menulerTab" class="text-xl font-bold text-gray-500 hover:text-turuncu px-4 py-2 whitespace-nowrap">🍽️ Menü Yönetimi</button>
+            <button onclick="sekmeDegistir('galeriTab')" id="btn_galeriTab" class="text-xl font-bold text-gray-500 hover:text-turuncu px-4 py-2 whitespace-nowrap">🖼️ Galeri Yönetimi</button>
+            <button onclick="sekmeDegistir('ayarlarTab')" id="btn_ayarlarTab" class="text-xl font-bold text-gray-500 hover:text-turuncu px-4 py-2 whitespace-nowrap">⚙️ Ayarlar</button>
         </div>
 
         <div id="siparislerTab" class="sekme-icerik">
@@ -83,6 +82,32 @@
             <div id="galeriAlani" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
         </div>
 
+        <div id="ayarlarTab" class="sekme-icerik hidden">
+            <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-adacayi max-w-4xl">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">Site Metinlerini ve İletişim Bilgilerini Güncelle</h2>
+                
+                <div class="mb-4">
+                    <label class="block font-bold text-sm mb-2 text-turuncu">Hakkımda Yazısı (TR)</label>
+                    <textarea id="ayar_hakkimda_tr" class="w-full p-3 border rounded-lg bg-gray-50" rows="3"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block font-bold text-sm mb-2 text-turuncu">Hakkımda Yazısı (EN)</label>
+                    <textarea id="ayar_hakkimda_en" class="w-full p-3 border rounded-lg bg-gray-50" rows="3"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block font-bold text-sm mb-2 text-turuncu">Hakkımda Yazısı (NL)</label>
+                    <textarea id="ayar_hakkimda_nl" class="w-full p-3 border rounded-lg bg-gray-50" rows="3"></textarea>
+                </div>
+                <hr class="my-6">
+                <div class="mb-6">
+                    <label class="block font-bold text-sm mb-2 text-adacayi">Müşteri İletişim Numarası</label>
+                    <input type="text" id="ayar_telefon" class="w-full p-3 border rounded-lg bg-gray-50 font-bold" placeholder="+31 6 XXX XXX">
+                </div>
+
+                <button onclick="ayarlariKaydet()" class="w-full bg-turuncu text-white px-6 py-4 rounded-lg font-bold text-lg shadow-md hover:bg-orange-600 transition">Tüm Ayarları Canlıya Al</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -93,6 +118,7 @@
             siparisleriGetir();
             menuleriGetir();
             fotograflariGetir();
+            ayarlariGetir();
         }
 
         // --- SEKME DEĞİŞTİRME MANTIĞI ---
@@ -100,11 +126,11 @@
             document.querySelectorAll('.sekme-icerik').forEach(el => el.classList.add('hidden'));
             document.getElementById(hedefSekmeId).classList.remove('hidden');
 
-            const butonlar = ['btn_siparislerTab', 'btn_menulerTab', 'btn_galeriTab'];
+            const butonlar = ['btn_siparislerTab', 'btn_menulerTab', 'btn_galeriTab', 'btn_ayarlarTab'];
             butonlar.forEach(btn => {
-                document.getElementById(btn).className = "text-xl font-bold text-gray-500 hover:text-turuncu px-4 py-2";
+                document.getElementById(btn).className = "text-xl font-bold text-gray-500 hover:text-turuncu px-4 py-2 whitespace-nowrap";
             });
-            document.getElementById('btn_' + hedefSekmeId).className = "text-xl font-bold text-turuncu border-b-4 border-turuncu px-4 py-2";
+            document.getElementById('btn_' + hedefSekmeId).className = "text-xl font-bold text-turuncu border-b-4 border-turuncu px-4 py-2 whitespace-nowrap";
         }
 
         // ==========================================
@@ -260,6 +286,41 @@
             if(confirm("Fotoğraf kalıcı olarak silinecek. Emin misiniz?")) {
                 await fetch(`${API_URL}/admin/fotograflar/${id}`, { method: "DELETE" });
                 fotograflariGetir();
+            }
+        }
+        
+        // ==========================================
+        // 4. AYARLAR FONKSİYONLARI
+        // ==========================================
+        async function ayarlariGetir() {
+            try {
+                const res = await fetch(`${API_URL}/ayarlar`);
+                const ayarlar = await res.json();
+                document.getElementById('ayar_hakkimda_tr').value = ayarlar.hakkimda_tr || "";
+                document.getElementById('ayar_hakkimda_en').value = ayarlar.hakkimda_en || "";
+                document.getElementById('ayar_hakkimda_nl').value = ayarlar.hakkimda_nl || "";
+                document.getElementById('ayar_telefon').value = ayarlar.telefon || "";
+            } catch (e) { console.error("Ayarlar çekilemedi", e); }
+        }
+
+        async function ayarlariKaydet() {
+            const pk = {
+                hakkimda_tr: document.getElementById('ayar_hakkimda_tr').value,
+                hakkimda_en: document.getElementById('ayar_hakkimda_en').value,
+                hakkimda_nl: document.getElementById('ayar_hakkimda_nl').value,
+                telefon: document.getElementById('ayar_telefon').value
+            };
+            
+            const yanit = await fetch(`${API_URL}/admin/ayarlar`, { 
+                method: "PUT", 
+                headers: { "Content-Type": "application/json" }, 
+                body: JSON.stringify(pk) 
+            });
+
+            if (yanit.ok) {
+                alert("Site yazıları ve telefon güncellendi! Müşteri sitesinde anında görünecek.");
+            } else {
+                alert("Güncelleme sırasında hata oluştu.");
             }
         }
     </script>
