@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl" class="scroll-smooth">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,83 +15,109 @@
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- HARİKA ANİMASYON SINIFLARI --- */
+        /* Section 1 & Genel Başlıklar (Hızlı Silikten Görünüre) */
+        .anim-fade-fast { opacity: 0; transition: opacity 0.5s ease-out; }
+        
+        /* Section 1 Alt Başlık (Biraz Gecikmeli) */
+        .anim-fade-delayed { opacity: 0; transition: opacity 0.6s ease-out 0.3s; }
+
+        /* Section 2 Hakkımda Yazısı (Soldan Sağa Açılarak Okunma - Wipe Effect) */
+        .anim-wipe { clip-path: inset(0 100% 0 0); transition: clip-path 0.8s ease-in-out 0.2s; }
+
+        /* Section 3 Menü Kartları (Soldan Kayarak Gelme - Opaklık değişmiyor) */
+        .anim-slide-card { transform: translateX(-60px); opacity: 1; transition: transform 0.5s ease-out; }
+
+        /* Section 4 Sipariş Bloğu (Aşağıdan Yavaşça Kayarak Gelme - Opaklık değişmiyor) */
+        .anim-slide-up-solid { transform: translateY(120px); transition: transform 0.9s ease-out 0.2s; }
+
+        /* EKRANA GİRDİĞİNDE DEVREYE GİRECEK TETİKLEYİCİLER (JS ile eklenecek) */
+        .ekranda .anim-fade-fast { opacity: 1; }
+        .ekranda .anim-fade-delayed { opacity: 1; }
+        .ekranda .anim-wipe { clip-path: inset(0 0 0 0); }
+        .ekranda .anim-slide-card { transform: translateX(0); }
+        .ekranda .anim-slide-up-solid { transform: translateY(0); }
     </style>
 </head>
-<body class="font-sans antialiased text-gray-800" onload="sayfaYuklendi()">
+<body class="font-sans antialiased text-gray-800 m-0 overflow-hidden h-screen bg-gray-100" onload="sayfaYuklendi()">
 
-    <section id="hosgeldiniz" class="min-h-screen bg-gulKurusu flex flex-col justify-center items-center p-8 text-center relative">
-        <div class="absolute top-6 right-8 flex gap-4 font-bold text-gray-700 z-10">
-            <button onclick="diliDegistir('tr')" class="hover:text-turuncu transition">TR</button>
-            <button onclick="diliDegistir('en')" class="hover:text-turuncu transition">EN</button>
-            <button onclick="diliDegistir('nl')" class="hover:text-turuncu transition">NL</button>
-        </div>
+    <main class="h-screen w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth no-scrollbar">
 
-        <h1 data-i18n="baslik" class="text-5xl md:text-7xl font-bold mb-6 text-gray-900 mt-12">Lezzet Sanatına Hoşgeldiniz</h1>
-        <p data-i18n="alt_baslik" class="text-xl md:text-2xl mb-8 max-w-2xl">Özel günleriniz için özenle hazırlanan eşsiz tatlar.</p>
-
-        <div class="relative w-full max-w-4xl h-64 md:h-96 group">
-            <button onclick="sliderKaydir(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-turuncu rounded-full w-12 h-12 flex items-center justify-center z-20 shadow-lg text-xl font-bold transition">❮</button>
-
-            <div id="sliderAlani" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar w-full h-full rounded-2xl shadow-xl bg-gray-300 relative z-10">
-                <div class="w-full h-full flex items-center justify-center text-gray-500 snap-center shrink-0">Fotoğraflar Yükleniyor...</div>
+        <section id="hosgeldiniz" class="min-h-screen w-full snap-center snap-always bg-gulKurusu flex flex-col justify-center items-center p-8 text-center relative overflow-hidden gorsel-section">
+            <div class="absolute top-6 right-8 flex gap-4 font-bold text-gray-700 z-10">
+                <button onclick="diliDegistir('tr')" class="hover:text-turuncu transition">TR</button>
+                <button onclick="diliDegistir('en')" class="hover:text-turuncu transition">EN</button>
+                <button onclick="diliDegistir('nl')" class="hover:text-turuncu transition">NL</button>
             </div>
 
-            <button onclick="sliderKaydir(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-turuncu rounded-full w-12 h-12 flex items-center justify-center z-20 shadow-lg text-xl font-bold transition">❯</button>
-        </div>
+            <h1 data-i18n="baslik" class="anim-fade-fast text-5xl md:text-7xl font-bold mb-6 text-gray-900 mt-12">Lezzet Sanatına Hoşgeldiniz</h1>
+            <p data-i18n="alt_baslik" class="anim-fade-delayed text-xl md:text-2xl mb-8 max-w-2xl">Özel günleriniz için özenle hazırlanan eşsiz tatlar.</p>
 
-        <a href="#hakkimda" data-i18n="asagi_kaydir" class="mt-8 text-turuncu font-bold text-lg animate-bounce">Aşağı Kaydır ↓</a>
-    </section>
+            <div class="anim-fade-fast relative w-full max-w-4xl h-64 md:h-96 group">
+                <button onclick="sliderKaydir(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-turuncu rounded-full w-12 h-12 flex items-center justify-center z-20 shadow-lg text-xl font-bold transition">❮</button>
 
-    <section id="hakkimda" class="min-h-screen bg-tasGrisi flex flex-col justify-center items-center p-8 text-center">
-        <h2 data-i18n="ben_kimim" class="text-4xl md:text-5xl font-bold mb-8 text-white">Ben Kimim?</h2>
+                <div id="sliderAlani" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar w-full h-full rounded-2xl shadow-xl bg-gray-300 relative z-10">
+                    <div class="w-full h-full flex items-center justify-center text-gray-500 snap-center shrink-0">Fotoğraflar Yükleniyor...</div>
+                </div>
 
-        <p data-i18n="ben_kimim_metin" class="text-lg md:text-xl max-w-3xl leading-relaxed text-gray-100">
-            Merhaba, ben Aslıhan Şahin. Vlissingen'de yaşıyor ve yemek yapma tutkumla sizlere ev yapımı catering lezzetleri sunuyorum. En taze malzemeler ve hijyen odaklı yaklaşımımla; özel davetlerinizi özen ve sevgiyle hazırlanan unutulmaz bir deneyime dönüştürüyorum.
-        </p>
-
-        <div id="bizKimizFotoAlani" class="mt-12 max-w-3xl w-full"></div>
-    </section>
-
-    <section id="menu" class="min-h-screen bg-adacayi flex flex-col justify-center items-center p-8">
-        <h2 data-i18n="menumuz" class="text-4xl md:text-5xl font-bold mb-12 text-white">Menümüz</h2>
-
-        <div id="dinamikMenuAlani" class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
-            <p class="text-white text-center w-full col-span-3">Menüler Yükleniyor...</p>
-        </div>
-    </section>
-
-    <section id="siparis" class="min-h-screen bg-turuncu flex flex-col justify-center items-center p-8">
-        <h2 data-i18n="siparis_olustur" class="text-4xl md:text-5xl font-bold mb-8 text-white">Sipariş Oluştur</h2>
-
-        <form id="siparisFormu" class="w-full max-w-2xl bg-white p-8 rounded-2xl shadow-2xl flex flex-col gap-4">
-            <div><label data-i18n="isim_etiket" class="block font-bold mb-2">İsim Soyisim</label><input type="text" id="isim" data-i18n-ph="isim_ph" class="w-full p-3 border rounded-lg"></div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div><label data-i18n="telefon_etiket" class="block font-bold mb-2">Telefon</label><input type="tel" id="telefon" data-i18n-ph="telefon_ph" class="w-full p-3 border rounded-lg"></div>
-                <div><label data-i18n="eposta_etiket" class="block font-bold mb-2">E-posta</label><input type="email" id="eposta" data-i18n-ph="eposta_ph" class="w-full p-3 border rounded-lg"></div>
+                <button onclick="sliderKaydir(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-turuncu rounded-full w-12 h-12 flex items-center justify-center z-20 shadow-lg text-xl font-bold transition">❯</button>
             </div>
-            <div><label data-i18n="adres_etiket" class="block font-bold mb-2">Adres</label><textarea id="adres" data-i18n-ph="adres_ph" rows="2" class="w-full p-3 border rounded-lg"></textarea></div>
-            <div><label data-i18n="icerik_etiket" class="block font-bold mb-2">Sipariş İçeriği</label><textarea id="siparis_icerigi" data-i18n-ph="icerik_ph" rows="4" class="w-full p-3 border rounded-lg"></textarea></div>
-            <button type="button" onclick="siparisiGonder()" data-i18n="gonder_buton" class="mt-4 bg-turuncu text-white font-bold py-4 rounded-lg hover:bg-orange-600">Siparişi Gönder</button>
-        </form>
 
-        <div class="mt-12 text-center text-white">
-            <h3 data-i18n="iletisim" class="text-2xl font-bold mb-2">İletişim</h3>
-            <p class="text-xl font-semibold">Aslıhan Şahin</p>
-            <p class="text-lg mt-1"> <a href="tel:+31687378905" class="hover:text-gray-200 underline decoration-dashed transition">+31 6 87378905</a></p>
-        </div>
+            <a href="#hakkimda" data-i18n="asagi_kaydir" class="mt-8 text-turuncu font-bold text-lg animate-bounce">Aşağı Kaydır ↓</a>
+        </section>
 
-    </section>
+        <section id="hakkimda" class="min-h-screen w-full snap-center snap-always bg-tasGrisi flex flex-col justify-center items-center p-8 text-center gorsel-section overflow-hidden">
+            <h2 data-i18n="ben_kimim" class="anim-fade-fast text-4xl md:text-5xl font-bold mb-8 text-white">Ben Kimim?</h2>
+
+            <p id="dinamik_hakkimda" class="anim-wipe text-lg md:text-xl max-w-3xl leading-relaxed text-gray-100">
+                Ayarlar yükleniyor...
+            </p>
+
+            <div id="bizKimizFotoAlani" class="anim-fade-fast mt-12 max-w-3xl w-full"></div>
+        </section>
+
+        <section id="menu" class="min-h-screen w-full snap-center snap-always bg-adacayi flex flex-col justify-center items-center p-8 gorsel-section overflow-hidden">
+            <h2 data-i18n="menumuz" class="anim-fade-fast text-4xl md:text-5xl font-bold mb-12 text-white">Menümüz</h2>
+
+            <div id="dinamikMenuAlani" class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
+                <p class="text-white text-center w-full col-span-3">Menüler Yükleniyor...</p>
+            </div>
+        </section>
+
+        <section id="siparis" class="min-h-screen w-full snap-center snap-always bg-turuncu flex flex-col justify-center items-center p-8 gorsel-section overflow-hidden">
+            <h2 data-i18n="siparis_olustur" class="anim-fade-fast text-4xl md:text-5xl font-bold mb-8 text-white">Sipariş Oluştur</h2>
+
+            <form id="siparisFormu" class="anim-slide-up-solid w-full max-w-2xl bg-white p-8 rounded-2xl shadow-2xl flex flex-col gap-4">
+                <div><label data-i18n="isim_etiket" class="block font-bold mb-2">İsim Soyisim</label><input type="text" id="isim" data-i18n-ph="isim_ph" class="w-full p-3 border rounded-lg"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div><label data-i18n="telefon_etiket" class="block font-bold mb-2">Telefon</label><input type="tel" id="telefon" data-i18n-ph="telefon_ph" class="w-full p-3 border rounded-lg"></div>
+                    <div><label data-i18n="eposta_etiket" class="block font-bold mb-2">E-posta</label><input type="email" id="eposta" data-i18n-ph="eposta_ph" class="w-full p-3 border rounded-lg"></div>
+                </div>
+                <div><label data-i18n="adres_etiket" class="block font-bold mb-2">Adres</label><textarea id="adres" data-i18n-ph="adres_ph" rows="2" class="w-full p-3 border rounded-lg"></textarea></div>
+                <div><label data-i18n="icerik_etiket" class="block font-bold mb-2">Sipariş İçeriği</label><textarea id="siparis_icerigi" data-i18n-ph="icerik_ph" rows="4" class="w-full p-3 border rounded-lg"></textarea></div>
+                <button type="button" onclick="siparisiGonder()" data-i18n="gonder_buton" class="mt-4 bg-turuncu text-white font-bold py-4 rounded-lg hover:bg-orange-600">Siparişi Gönder</button>
+            </form>
+
+            <div class="mt-12 text-center text-white z-10">
+                <h3 data-i18n="iletisim" class="text-2xl font-bold mb-2">İletişim</h3>
+                <p class="text-xl font-semibold">Aslıhan Şahin</p>
+                <p class="text-lg mt-1 font-bold"> <a id="dinamik_telefon" href="#" class="hover:text-gray-200 underline decoration-dashed transition">Yükleniyor...</a></p>
+            </div>
+        </section>
+
+    </main>
 
     <script>
         const API_URL = "https://catering-api-hhbx.onrender.com";
         let aktifDil = 'nl'; // Sitenin ilk açılacağı dili NL yaptık
         let tumMenuler = [];
+        let siteAyarlari = {}; // Ayarları globalde tutuyoruz
 
         const ceviriler = {
             tr: {
                 baslik: "Lezzet Sanatına Hoşgeldiniz", alt_baslik: "Özel günleriniz için özenle hazırlanan eşsiz tatlar.", asagi_kaydir: "Aşağı Kaydır ↓",
                 ben_kimim: "Ben Kimim?",
-                ben_kimim_metin: "Merhaba, ben Aslıhan Şahin. Vlissingen'de yaşıyor ve yemek yapma tutkumla sizlere ev yapımı catering lezzetleri sunuyorum. En taze malzemeler ve hijyen odaklı yaklaşımımla; özel davetlerinizi özen ve sevgiyle hazırlanan unutulmaz bir deneyime dönüştürüyorum.",
                 menumuz: "Menümüz", siparis_olustur: "Sipariş Oluştur",
                 isim_etiket: "İsim Soyisim", isim_ph: "Adınız Soyadınız", telefon_etiket: "Telefon", telefon_ph: "+31 6 XXX",
                 eposta_etiket: "E-posta", eposta_ph: "ornek@mail.com", adres_etiket: "Adres", adres_ph: "Teslimat Adresi",
@@ -102,7 +128,6 @@
             en: {
                 baslik: "Welcome to the Art of Taste", alt_baslik: "Unique flavors for your special days.", asagi_kaydir: "Scroll Down ↓",
                 ben_kimim: "Who Am I?",
-                ben_kimim_metin: "Hello, I'm Aslıhan Şahin. I live in Vlissingen and offer homemade catering delicacies fueled by my passion for cooking. With the freshest ingredients and a strict focus on hygiene, I turn your special events into unforgettable experiences crafted with care and love.",
                 menumuz: "Our Menu", siparis_olustur: "Create Order",
                 isim_etiket: "Full Name", isim_ph: "Your Name", telefon_etiket: "Phone", telefon_ph: "+31 6 XXX",
                 eposta_etiket: "Email", eposta_ph: "example@mail.com", adres_etiket: "Address", adres_ph: "Delivery Address",
@@ -113,7 +138,6 @@
             nl: {
                 baslik: "Welkom bij de Smaakkunst", alt_baslik: "Unieke smaken voor uw speciale dagen.", asagi_kaydir: "Scroll naar beneden ↓",
                 ben_kimim: "Wie Ben Ik?",
-                ben_kimim_metin: "Hallo, ik ben Aslıhan Şahin. Ik woon in Vlissingen en bied met mijn passie voor koken huisgemaakte catering aan. Met de meest verse ingrediënten en een strikte focus op hygiëne, transformeer ik uw speciale evenementen in onvergetelijke ervaringen, bereid met zorg en liefde.",
                 menumuz: "Ons Menu", siparis_olustur: "Bestelling Plaatsen",
                 isim_etiket: "Volledige Naam", isim_ph: "Uw Voor- en Achternaam", telefon_etiket: "Telefoonnummer", telefon_ph: "+31 6 XXX",
                 eposta_etiket: "E-mailadres", eposta_ph: "voorbeeld@mail.com", adres_etiket: "Adres", adres_ph: "Bezorgadres",
@@ -125,10 +149,15 @@
 
         async function sayfaYuklendi() {
             try {
-                const menuRes = await fetch(`${API_URL}/menuler`);
-                tumMenuler = await menuRes.json();
+                // Menü, Fotoğraflar ve Ayarları aynı anda (paralel) çekiyoruz
+                const [menuRes, fotoRes, ayarRes] = await Promise.all([
+                    fetch(`${API_URL}/menuler`),
+                    fetch(`${API_URL}/fotograflar`),
+                    fetch(`${API_URL}/ayarlar`)
+                ]);
 
-                const fotoRes = await fetch(`${API_URL}/fotograflar`);
+                tumMenuler = await menuRes.json();
+                siteAyarlari = await ayarRes.json();
                 const fotolar = await fotoRes.json();
 
                 const sliderFotolari = fotolar.filter(f => f.bolum === "slider");
@@ -137,12 +166,30 @@
                 sliderCiz(sliderFotolari);
                 bizKimizFotolariCiz(bizKimizFotolari);
 
-                // Veriler çekildikten sonra sayfayı anında NL'ye zorluyoruz
+                // Veriler çekildikten sonra sayfayı anında NL'ye zorluyoruz ve animasyonları başlatıyoruz
                 diliDegistir('nl');
+                animasyonGozlemcisiniBaslat();
 
             } catch (hata) {
                 console.error("Veriler backend'den çekilemedi: ", hata);
             }
+        }
+
+        // --- Intersection Observer (Ekrana Girince Animasyonları Tetikleme) ---
+        function animasyonGozlemcisiniBaslat() {
+            const gozlemci = new IntersectionObserver((girdiler) => {
+                girdiler.forEach(girdi => {
+                    // Sayfa en az %30 göründüğünde 'ekranda' sınıfını ekle
+                    if (girdi.isIntersecting) {
+                        girdi.target.classList.add('ekranda');
+                    } else {
+                        // Sayfadan çıkınca sınıfı sil, böylece tekrar geldiğinde animasyon baştan çalar
+                        girdi.target.classList.remove('ekranda');
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            document.querySelectorAll('.gorsel-section').forEach(sec => gozlemci.observe(sec));
         }
 
         // --- OKLARLA SLİDER KAYDIRMA FONKSİYONU ---
@@ -160,7 +207,6 @@
             }
             alan.innerHTML = "";
             fotolar.forEach(f => {
-                // Sadece f.url kullanıyoruz (Cloudinary tam URL veriyor)
                 alan.innerHTML += `<img src="${f.url}" class="snap-center shrink-0 w-full h-full object-contain">`;
             });
         }
@@ -168,7 +214,6 @@
         function bizKimizFotolariCiz(fotolar) {
             const alan = document.getElementById("bizKimizFotoAlani");
             if (fotolar.length > 0) {
-                // Sadece fotolar[0].url kullanıyoruz (Cloudinary tam URL veriyor)
                 alan.innerHTML = `<img src="${fotolar[0].url}" class="w-full h-auto rounded-2xl shadow-xl">`;
             }
         }
@@ -181,8 +226,7 @@
             }
 
             alan.innerHTML = "";
-            tumMenuler.forEach(m => {
-                // Eğer veritabanından Hollandaca gelmiyorsa (eski kayıtsa) sayfayı bozmaması için koruma eklendi
+            tumMenuler.forEach((m, index) => {
                 const baslik = m[`baslik_${aktifDil}`];
                 const icerikDizisi = m[`icerik_${aktifDil}`];
 
@@ -190,8 +234,9 @@
 
                 const listeHTML = icerikDizisi.map(yemek => `<li>${yemek}</li>`).join('');
 
+                // Her kartın transition süresini index * 0.15s arttırıyoruz (Staggered Effect - Tek tek geliş)
                 alan.innerHTML += `
-                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="anim-slide-card bg-white p-6 rounded-xl shadow-lg" style="transition-delay: ${index * 0.15}s">
                         <h3 class="text-2xl font-bold text-turuncu mb-4">${baslik}</h3>
                         <ul class="space-y-2">
                             ${listeHTML}
@@ -205,8 +250,16 @@
             aktifDil = dilKodu;
             const seciliSozluk = ceviriler[dilKodu];
 
+            // Sabit metinleri çevir
             document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = seciliSozluk[el.getAttribute('data-i18n')]);
             document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = seciliSozluk[el.getAttribute('data-i18n-ph')]);
+
+            // DİNAMİK VERİTABANI METİNLERİNİ ÇEVİR
+            document.getElementById('dinamik_hakkimda').textContent = siteAyarlari[`hakkimda_${dilKodu}`] || "Metin bulunamadı.";
+            
+            const numara = siteAyarlari.telefon || "+31000000";
+            document.getElementById('dinamik_telefon').textContent = numara;
+            document.getElementById('dinamik_telefon').href = `tel:${numara.replace(/\s+/g, '')}`;
 
             menuleriCiz();
         }
