@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gelişmiş Yönetim Paneli | Catering</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: { colors: { turuncu: '#FF6F00', gulKurusu: '#E8D4D6', tasGrisi: '#B8B2A7', adacayi: '#A8B8A2' } }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans" onload="sayfaYuklendi()">
+
+    <nav class="bg-tasGrisi text-white p-4 shadow-md flex justify-between items-center sticky top-0 z-50">
+        <h1 class="text-2xl font-bold">Catering Yönetim Paneli</h1>
+        <a href="index.html" class="bg-white text-tasGrisi px-4 py-2 rounded font-bold hover:bg-gray-200 transition" target="_blank">Siteyi Görüntüle</a>
+    </nav>
+
+    <div class="container mx-auto p-8">
+
+        <div class="flex gap-4 border-b-2 border-gray-300 mb-8 pb-2">
+            <button onclick="sekmeDegistir('siparislerTab')" id="btn_siparislerTab" class="text-xl font-bold text-turuncu border-b-4 border-turuncu px-4 py-2">📦 Siparişler</button>
+            <button onclick="sekmeDegistir('menulerTab')" id="btn_menulerTab" class="text-xl font-bold text-gray-500 hover:text-turuncu px-4 py-2">🍽️ Menü Yönetimi</button>
+            <button onclick="sekmeDegistir('galeriTab')" id="btn_galeriTab" class="text-xl font-bold text-gray-500 hover:text-turuncu px-4 py-2">🖼️ Galeri Yönetimi</button>
+        </div>
+
+        <div id="siparislerTab" class="sekme-icerik">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Aktif Siparişler</h2>
+            <div id="siparisAlani" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+                <p class="text-gray-500 italic">Siparişler yükleniyor...</p>
+            </div>
+        </div>
+
+        <div id="menulerTab" class="sekme-icerik hidden">
+            <div class="bg-white p-6 rounded-xl shadow-lg mb-8 border-l-4 border-turuncu">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Yeni Menü Kartı Ekle</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div><label class="font-bold text-sm">Başlık (TR)</label><input type="text" id="menu_baslik_tr" class="w-full p-2 border rounded" placeholder="Örn: Başlangıçlar"></div>
+                    <div><label class="font-bold text-sm">Başlık (EN)</label><input type="text" id="menu_baslik_en" class="w-full p-2 border rounded" placeholder="Örn: Starters"></div>
+                    <div><label class="font-bold text-sm">Başlık (NL)</label><input type="text" id="menu_baslik_nl" class="w-full p-2 border rounded" placeholder="Örn: Voorgerechten"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div><label class="font-bold text-sm">İçerikler (TR) - Virgülle ayırın</label><textarea id="menu_icerik_tr" class="w-full p-2 border rounded" rows="2" placeholder="Bruschetta, Kiş, Enginar"></textarea></div>
+                    <div><label class="font-bold text-sm">İçerikler (EN) - Virgülle ayırın</label><textarea id="menu_icerik_en" class="w-full p-2 border rounded" rows="2" placeholder="Bruschetta, Quiche, Artichoke"></textarea></div>
+                    <div><label class="font-bold text-sm">İçerikler (NL) - Virgülle ayırın</label><textarea id="menu_icerik_nl" class="w-full p-2 border rounded" rows="2" placeholder="Bruschetta, Quiche, Artisjok"></textarea></div>
+                </div>
+                <button onclick="menuEkle()" class="bg-adacayi text-white px-6 py-2 rounded font-bold hover:bg-green-600">Menüyü Kaydet</button>
+            </div>
+
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Mevcut Menüler</h2>
+            <div id="menuAlani" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+        </div>
+
+        <div id="galeriTab" class="sekme-icerik hidden">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-turuncu">
+                    <h3 class="text-xl font-bold mb-4">Ana Sayfa Slider'a Ekle</h3>
+                    <label class="block font-bold text-sm mb-1">Görsel Seçin</label>
+                    <input type="file" id="foto_dosya_slider" accept="image/*" class="w-full p-2 border rounded bg-gray-50 mb-4">
+
+                    <label class="block font-bold text-sm mb-1">Görünme Sırası</label>
+                    <input type="number" id="foto_sira" value="1" min="1" class="w-full p-2 border rounded bg-gray-50 mb-4">
+
+                    <button onclick="fotografYukle('slider')" class="w-full bg-turuncu text-white px-6 py-2 rounded font-bold hover:bg-orange-600">Slider'a Yükle</button>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-adacayi">
+                    <h3 class="text-xl font-bold mb-4">Ben Kimim Fotoğrafını Değiştir</h3>
+                    <p class="text-sm text-gray-500 mb-4">Buraya yükleyeceğiniz fotoğraf, mevcut fotoğrafın üzerine yazılır (Sıra numarası gerektirmez).</p>
+                    <label class="block font-bold text-sm mb-1">Görsel Seçin</label>
+                    <input type="file" id="foto_dosya_bizkimiz" accept="image/*" class="w-full p-2 border rounded bg-gray-50 mb-4">
+
+                    <button onclick="fotografYukle('biz_kimiz')" class="w-full bg-adacayi text-white px-6 py-2 rounded font-bold hover:bg-green-600 mt-2">Fotoğrafı Güncelle</button>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Yüklü Fotoğraflar</h2>
+            <div id="galeriAlani" class="grid grid-cols-2 md:grid-cols-4 gap-6"></div>
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = "https://catering-api-hhbx.onrender.com";
+
+        // --- SAYFA YÜKLENDİĞİNDE TÜM VERİLERİ ÇEK ---
+        function sayfaYuklendi() {
+            siparisleriGetir();
+            menuleriGetir();
+            fotograflariGetir();
+        }
+
+        // --- SEKME DEĞİŞTİRME MANTIĞI ---
+        function sekmeDegistir(hedefSekmeId) {
+            document.querySelectorAll('.sekme-icerik').forEach(el => el.classList.add('hidden'));
+            document.getElementById(hedefSekmeId).classList.remove('hidden');
+
+            const butonlar = ['btn_siparislerTab', 'btn_menulerTab', 'btn_galeriTab'];
+            butonlar.forEach(btn => {
+                document.getElementById(btn).className = "text-xl font-bold text-gray-500 hover:text-turuncu px-4 py-2";
+            });
+            document.getElementById('btn_' + hedefSekmeId).className = "text-xl font-bold text-turuncu border-b-4 border-turuncu px-4 py-2";
+        }
+
+        // ==========================================
+        // 1. SİPARİŞ FONKSİYONLARI
+        // ==========================================
+        async function siparisleriGetir() {
+            try {
+                const res = await fetch(`${API_URL}/admin/siparisler`);
+                const veriler = await res.json();
+                const alan = document.getElementById("siparisAlani");
+                alan.innerHTML = veriler.length ? "" : "<p>Sipariş yok.</p>";
+
+                veriler.forEach(s => {
+                    alan.innerHTML += `
+                        <div class="bg-white p-6 rounded-xl shadow-lg border-t-4 border-turuncu">
+                            <h3 class="text-xl font-bold">${s.isim_soyisim}</h3>
+                            <p class="text-sm">📞 ${s.telefon} | ✉️ ${s.eposta}</p>
+                            <hr class="my-2">
+                            <p class="text-sm"><strong>Sipariş:</strong> ${s.siparis_icerigi}</p>
+                            <button onclick="siparisSil('${s.id}')" class="mt-4 w-full bg-red-500 text-white py-2 rounded font-bold">Sil</button>
+                        </div>`;
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        async function siparisSil(id) {
+            if(confirm("Silmek istediğinize emin misiniz?")) {
+                await fetch(`${API_URL}/admin/siparisler/${id}`, { method: "DELETE" });
+                siparisleriGetir();
+            }
+        }
+
+        // ==========================================
+        // 2. MENÜ FONKSİYONLARI
+        // ==========================================
+        async function menuEkle() {
+            const ayir = (metin) => metin.split(',').map(item => item.trim()).filter(item => item !== "");
+
+            const veriPaketi = {
+                baslik_tr: document.getElementById('menu_baslik_tr').value,
+                baslik_en: document.getElementById('menu_baslik_en').value,
+                baslik_nl: document.getElementById('menu_baslik_nl').value,
+                icerik_tr: ayir(document.getElementById('menu_icerik_tr').value),
+                icerik_en: ayir(document.getElementById('menu_icerik_en').value),
+                icerik_nl: ayir(document.getElementById('menu_icerik_nl').value),
+            };
+
+            if(!veriPaketi.baslik_tr || veriPaketi.icerik_tr.length === 0) {
+                alert("Lütfen en azından Türkçe başlık ve içerik giriniz!"); return;
+            }
+
+            await fetch(`${API_URL}/admin/menuler`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(veriPaketi)
+            });
+
+            alert("Menü Eklendi!");
+            menuleriGetir();
+        }
+
+        async function menuleriGetir() {
+            const res = await fetch(`${API_URL}/menuler`);
+            const veriler = await res.json();
+            const alan = document.getElementById("menuAlani");
+            alan.innerHTML = veriler.length ? "" : "<p>Henüz menü eklenmemiş.</p>";
+
+            veriler.forEach(m => {
+                alan.innerHTML += `
+                    <div class="bg-white p-4 rounded-xl shadow-lg border-t-4 border-adacayi">
+                        <h3 class="text-lg font-bold text-turuncu">${m.baslik_tr}</h3>
+                        <p class="text-xs text-gray-500 mb-2">EN: ${m.baslik_en} | NL: ${m.baslik_nl}</p>
+                        <ul class="list-disc pl-5 text-sm mb-4">
+                            ${m.icerik_tr.map(yemek => `<li>${yemek}</li>`).join('')}
+                        </ul>
+                        <button onclick="menuSil('${m.id}')" class="w-full bg-red-500 text-white py-1 rounded font-bold text-sm">Kaldır</button>
+                    </div>`;
+            });
+        }
+
+        async function menuSil(id) {
+            if(confirm("Bu menüyü silmek istediğinize emin misiniz?")) {
+                await fetch(`${API_URL}/admin/menuler/${id}`, { method: "DELETE" });
+                menuleriGetir();
+            }
+        }
+
+        // ==========================================
+        // 3. GALERİ (FOTOĞRAF) FONKSİYONLARI
+        // ==========================================
+        async function fotografYukle(bolum) {
+            // Hangi bölümün dosya inputundan okuyacağımızı seçiyoruz
+            const inputId = bolum === 'slider' ? 'foto_dosya_slider' : 'foto_dosya_bizkimiz';
+            const dosyaInput = document.getElementById(inputId);
+
+            if (dosyaInput.files.length === 0) {
+                alert("Lütfen bir görsel seçin!"); return;
+            }
+
+            const formData = new FormData();
+            formData.append("bolum", bolum);
+            formData.append("dosya", dosyaInput.files[0]);
+
+            // Eğer slider ise sıra numarasını ekle, değilse 1 gönder
+            if (bolum === 'slider') {
+                formData.append("sira", document.getElementById('foto_sira').value);
+            } else {
+                formData.append("sira", 1);
+            }
+
+            try {
+                const yanit = await fetch(`${API_URL}/admin/fotograflar`, { method: "POST", body: formData });
+
+                // Backend'den hata geldiyse (Örn: 400 Sıra dolu uyarısı)
+                if (!yanit.ok) {
+                    const hata = await yanit.json();
+                    alert("HATA: " + hata.detail);
+                    return;
+                }
+
+                alert("Fotoğraf başarıyla yüklendi!");
+                dosyaInput.value = "";
+                if(bolum === 'slider') document.getElementById('foto_sira').value = 1;
+                fotograflariGetir();
+            } catch(e) {
+                alert("Sunucuya ulaşılamıyor."); console.error(e);
+            }
+        }
+
+        async function fotograflariGetir() {
+            const res = await fetch(`${API_URL}/fotograflar`);
+            const veriler = await res.json();
+            const alan = document.getElementById("galeriAlani");
+            alan.innerHTML = veriler.length ? "" : "<p>Henüz fotoğraf yüklenmemiş.</p>";
+
+            veriler.forEach(f => {
+                alan.innerHTML += `
+                    <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 flex flex-col">
+                        <img src="${API_URL}${f.url}" class="h-32 w-full object-cover">
+                        <div class="p-3 text-center flex-1 flex flex-col justify-between">
+                            <div>
+                                <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded font-bold">${f.bolum === 'slider' ? 'Slider' : 'Biz Kimiz'}</span>
+                                <p class="text-sm mt-2">Sıra: <strong>${f.sira}</strong></p>
+                            </div>
+                            <button onclick="fotografSil('${f.id}')" class="mt-3 w-full bg-red-500 text-white py-1 rounded font-bold text-sm">Sil</button>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        async function fotografSil(id) {
+            if(confirm("Fotoğraf kalıcı olarak silinecek. Emin misiniz?")) {
+                await fetch(`${API_URL}/admin/fotograflar/${id}`, { method: "DELETE" });
+                fotograflariGetir();
+            }
+        }
+    </script>
+</body>
+</html>

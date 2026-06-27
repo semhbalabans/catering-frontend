@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="nl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catering | Lezzet Sanatı</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { turuncu: '#FF6F00', gulKurusu: '#E8D4D6', tasGrisi: '#B8B2A7', adacayi: '#A8B8A2' } } }
+        }
+    </script>
+
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="font-sans antialiased text-gray-800" onload="sayfaYuklendi()">
+
+    <section id="hosgeldiniz" class="min-h-screen bg-gulKurusu flex flex-col justify-center items-center p-8 text-center relative">
+        <div class="absolute top-6 right-8 flex gap-4 font-bold text-gray-700 z-10">
+            <button onclick="diliDegistir('tr')" class="hover:text-turuncu transition">TR</button>
+            <button onclick="diliDegistir('en')" class="hover:text-turuncu transition">EN</button>
+            <button onclick="diliDegistir('nl')" class="hover:text-turuncu transition">NL</button>
+        </div>
+
+        <h1 data-i18n="baslik" class="text-5xl md:text-7xl font-bold mb-6 text-gray-900 mt-12">Lezzet Sanatına Hoşgeldiniz</h1>
+        <p data-i18n="alt_baslik" class="text-xl md:text-2xl mb-8 max-w-2xl">Özel günleriniz için özenle hazırlanan eşsiz tatlar.</p>
+
+        <div class="relative w-full max-w-4xl h-64 md:h-96 group">
+            <button onclick="sliderKaydir(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-turuncu rounded-full w-12 h-12 flex items-center justify-center z-20 shadow-lg text-xl font-bold transition">❮</button>
+
+            <div id="sliderAlani" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar w-full h-full rounded-2xl shadow-xl bg-gray-300 relative z-10">
+                <div class="w-full h-full flex items-center justify-center text-gray-500 snap-center shrink-0">Fotoğraflar Yükleniyor...</div>
+            </div>
+
+            <button onclick="sliderKaydir(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-turuncu rounded-full w-12 h-12 flex items-center justify-center z-20 shadow-lg text-xl font-bold transition">❯</button>
+        </div>
+
+        <a href="#hakkimda" data-i18n="asagi_kaydir" class="mt-8 text-turuncu font-bold text-lg animate-bounce">Aşağı Kaydır ↓</a>
+    </section>
+
+    <section id="hakkimda" class="min-h-screen bg-tasGrisi flex flex-col justify-center items-center p-8 text-center">
+        <h2 data-i18n="ben_kimim" class="text-4xl md:text-5xl font-bold mb-8 text-white">Ben Kimim?</h2>
+
+        <p data-i18n="ben_kimim_metin" class="text-lg md:text-xl max-w-3xl leading-relaxed text-gray-100">
+            Merhaba, ben Aslıhan Şahin. Vlissingen'de yaşıyor ve yemek yapma tutkumla sizlere ev yapımı catering lezzetleri sunuyorum. En taze malzemeler ve hijyen odaklı yaklaşımımla; özel davetlerinizi özen ve sevgiyle hazırlanan unutulmaz bir deneyime dönüştürüyorum.
+        </p>
+
+        <div id="bizKimizFotoAlani" class="mt-12 max-w-3xl w-full"></div>
+    </section>
+
+    <section id="menu" class="min-h-screen bg-adacayi flex flex-col justify-center items-center p-8">
+        <h2 data-i18n="menumuz" class="text-4xl md:text-5xl font-bold mb-12 text-white">Menümüz</h2>
+
+        <div id="dinamikMenuAlani" class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl">
+            <p class="text-white text-center w-full col-span-3">Menüler Yükleniyor...</p>
+        </div>
+    </section>
+
+    <section id="siparis" class="min-h-screen bg-turuncu flex flex-col justify-center items-center p-8">
+        <h2 data-i18n="siparis_olustur" class="text-4xl md:text-5xl font-bold mb-8 text-white">Sipariş Oluştur</h2>
+
+        <form id="siparisFormu" class="w-full max-w-2xl bg-white p-8 rounded-2xl shadow-2xl flex flex-col gap-4">
+            <div><label data-i18n="isim_etiket" class="block font-bold mb-2">İsim Soyisim</label><input type="text" id="isim" data-i18n-ph="isim_ph" class="w-full p-3 border rounded-lg"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div><label data-i18n="telefon_etiket" class="block font-bold mb-2">Telefon</label><input type="tel" id="telefon" data-i18n-ph="telefon_ph" class="w-full p-3 border rounded-lg"></div>
+                <div><label data-i18n="eposta_etiket" class="block font-bold mb-2">E-posta</label><input type="email" id="eposta" data-i18n-ph="eposta_ph" class="w-full p-3 border rounded-lg"></div>
+            </div>
+            <div><label data-i18n="adres_etiket" class="block font-bold mb-2">Adres</label><textarea id="adres" data-i18n-ph="adres_ph" rows="2" class="w-full p-3 border rounded-lg"></textarea></div>
+            <div><label data-i18n="icerik_etiket" class="block font-bold mb-2">Sipariş İçeriği</label><textarea id="siparis_icerigi" data-i18n-ph="icerik_ph" rows="4" class="w-full p-3 border rounded-lg"></textarea></div>
+            <button type="button" onclick="siparisiGonder()" data-i18n="gonder_buton" class="mt-4 bg-turuncu text-white font-bold py-4 rounded-lg hover:bg-orange-600">Siparişi Gönder</button>
+        </form>
+
+        <div class="mt-12 text-center text-white">
+            <h3 data-i18n="iletisim" class="text-2xl font-bold mb-2">İletişim</h3>
+            <p class="text-xl font-semibold">Aslıhan Şahin</p>
+            <p class="text-lg mt-1"> <a href="tel:+31687378905" class="hover:text-gray-200 underline decoration-dashed transition">+31 6 87378905</a></p>
+        </div>
+
+    </section>
+
+    <script>
+        const API_URL = "https://catering-api-hhbx.onrender.com";
+        let aktifDil = 'nl'; // Sitenin ilk açılacağı dili NL yaptık
+        let tumMenuler = [];
+
+        const ceviriler = {
+            tr: {
+                baslik: "Lezzet Sanatına Hoşgeldiniz", alt_baslik: "Özel günleriniz için özenle hazırlanan eşsiz tatlar.", asagi_kaydir: "Aşağı Kaydır ↓",
+                ben_kimim: "Ben Kimim?",
+                ben_kimim_metin: "Merhaba, ben Aslıhan Şahin. Vlissingen'de yaşıyor ve yemek yapma tutkumla sizlere ev yapımı catering lezzetleri sunuyorum. En taze malzemeler ve hijyen odaklı yaklaşımımla; özel davetlerinizi özen ve sevgiyle hazırlanan unutulmaz bir deneyime dönüştürüyorum.",
+                menumuz: "Menümüz", siparis_olustur: "Sipariş Oluştur",
+                isim_etiket: "İsim Soyisim", isim_ph: "Adınız Soyadınız", telefon_etiket: "Telefon", telefon_ph: "+31 6 XXX",
+                eposta_etiket: "E-posta", eposta_ph: "ornek@mail.com", adres_etiket: "Adres", adres_ph: "Teslimat Adresi",
+                icerik_etiket: "Sipariş İçeriği", icerik_ph: "Menü seçimlerinizi yazınız...", gonder_buton: "Siparişi Gönder",
+                iletisim: "İletişim",
+                uyari_bos: "Lütfen alanları doldurunuz!", uyari_basarili: "Siparişiniz alındı!"
+            },
+            en: {
+                baslik: "Welcome to the Art of Taste", alt_baslik: "Unique flavors for your special days.", asagi_kaydir: "Scroll Down ↓",
+                ben_kimim: "Who Am I?",
+                ben_kimim_metin: "Hello, I'm Aslıhan Şahin. I live in Vlissingen and offer homemade catering delicacies fueled by my passion for cooking. With the freshest ingredients and a strict focus on hygiene, I turn your special events into unforgettable experiences crafted with care and love.",
+                menumuz: "Our Menu", siparis_olustur: "Create Order",
+                isim_etiket: "Full Name", isim_ph: "Your Name", telefon_etiket: "Phone", telefon_ph: "+31 6 XXX",
+                eposta_etiket: "Email", eposta_ph: "example@mail.com", adres_etiket: "Address", adres_ph: "Delivery Address",
+                icerik_etiket: "Order Details", icerik_ph: "Write your menu selections...", gonder_buton: "Send Order",
+                iletisim: "Contact",
+                uyari_bos: "Please fill the fields!", uyari_basarili: "Order received!"
+            },
+            nl: {
+                baslik: "Welkom bij de Smaakkunst", alt_baslik: "Unieke smaken voor uw speciale dagen.", asagi_kaydir: "Scroll naar beneden ↓",
+                ben_kimim: "Wie Ben Ik?",
+                ben_kimim_metin: "Hallo, ik ben Aslıhan Şahin. Ik woon in Vlissingen en bied met mijn passie voor koken huisgemaakte catering aan. Met de meest verse ingrediënten en een strikte focus op hygiëne, transformeer ik uw speciale evenementen in onvergetelijke ervaringen, bereid met zorg en liefde.",
+                menumuz: "Ons Menu", siparis_olustur: "Bestelling Plaatsen",
+                isim_etiket: "Volledige Naam", isim_ph: "Uw Voor- en Achternaam", telefon_etiket: "Telefoonnummer", telefon_ph: "+31 6 XXX",
+                eposta_etiket: "E-mailadres", eposta_ph: "voorbeeld@mail.com", adres_etiket: "Adres", adres_ph: "Bezorgadres",
+                icerik_etiket: "Bestelgegevens", icerik_ph: "Schrijf hier uw menukeuzes...", gonder_buton: "Bestelling Verzenden",
+                iletisim: "Contact",
+                uyari_bos: "Vul alstublieft alle velden in!", uyari_basarili: "Uw bestelling is succesvol ontvangen!"
+            }
+        };
+
+        async function sayfaYuklendi() {
+            try {
+                const menuRes = await fetch(`${API_URL}/menuler`);
+                tumMenuler = await menuRes.json();
+
+                const fotoRes = await fetch(`${API_URL}/fotograflar`);
+                const fotolar = await fotoRes.json();
+
+                const sliderFotolari = fotolar.filter(f => f.bolum === "slider");
+                const bizKimizFotolari = fotolar.filter(f => f.bolum === "biz_kimiz");
+
+                sliderCiz(sliderFotolari);
+                bizKimizFotolariCiz(bizKimizFotolari);
+
+                // Veriler çekildikten sonra sayfayı anında NL'ye zorluyoruz
+                diliDegistir('nl');
+
+            } catch (hata) {
+                console.error("Veriler backend'den çekilemedi: ", hata);
+            }
+        }
+
+        // --- OKLARLA SLİDER KAYDIRMA FONKSİYONU ---
+        function sliderKaydir(yon) {
+            const slider = document.getElementById("sliderAlani");
+            const kaydirmaMiktari = slider.clientWidth;
+            slider.scrollBy({ left: yon * kaydirmaMiktari, behavior: 'smooth' });
+        }
+
+        function sliderCiz(fotolar) {
+            const alan = document.getElementById("sliderAlani");
+            if (fotolar.length === 0) {
+                alan.innerHTML = `<div class="w-full h-full flex items-center justify-center text-gray-500 snap-center shrink-0">Slider'da gösterilecek fotoğraf yok.</div>`;
+                return;
+            }
+            alan.innerHTML = "";
+            fotolar.forEach(f => {
+                alan.innerHTML += `<img src="${API_URL}${f.url}" class="snap-center shrink-0 w-full h-full object-contain">`;
+            });
+        }
+
+        function bizKimizFotolariCiz(fotolar) {
+            const alan = document.getElementById("bizKimizFotoAlani");
+            if (fotolar.length > 0) {
+                alan.innerHTML = `<img src="${API_URL}${fotolar[0].url}" class="w-full h-auto rounded-2xl shadow-xl">`;
+            }
+        }
+
+        function menuleriCiz() {
+            const alan = document.getElementById("dinamikMenuAlani");
+            if (tumMenuler.length === 0) {
+                alan.innerHTML = `<p class="text-white text-center w-full col-span-3">Henüz menü eklenmemiş.</p>`;
+                return;
+            }
+
+            alan.innerHTML = "";
+            tumMenuler.forEach(m => {
+                // Eğer veritabanından Hollandaca gelmiyorsa (eski kayıtsa) sayfayı bozmaması için koruma eklendi
+                const baslik = m[`baslik_${aktifDil}`];
+                const icerikDizisi = m[`icerik_${aktifDil}`];
+
+                if (!baslik || !icerikDizisi) return;
+
+                const listeHTML = icerikDizisi.map(yemek => `<li>${yemek}</li>`).join('');
+
+                alan.innerHTML += `
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <h3 class="text-2xl font-bold text-turuncu mb-4">${baslik}</h3>
+                        <ul class="space-y-2">
+                            ${listeHTML}
+                        </ul>
+                    </div>
+                `;
+            });
+        }
+
+        function diliDegistir(dilKodu) {
+            aktifDil = dilKodu;
+            const seciliSozluk = ceviriler[dilKodu];
+
+            document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = seciliSozluk[el.getAttribute('data-i18n')]);
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = seciliSozluk[el.getAttribute('data-i18n-ph')]);
+
+            menuleriCiz();
+        }
+
+        async function siparisiGonder() {
+            const pk = {
+                isim_soyisim: document.getElementById("isim").value, telefon: document.getElementById("telefon").value,
+                eposta: document.getElementById("eposta").value, adres: document.getElementById("adres").value,
+                siparis_icerigi: document.getElementById("siparis_icerigi").value
+            };
+            if(!pk.isim_soyisim || !pk.telefon || !pk.siparis_icerigi) return alert(ceviriler[aktifDil].uyari_bos);
+
+            const yanit = await fetch(`${API_URL}/siparisler`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(pk) });
+            if (yanit.ok) { alert(ceviriler[aktifDil].uyari_basarili); document.getElementById("siparisFormu").reset(); }
+        }
+    </script>
+</body>
+</html>
