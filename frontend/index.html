@@ -16,22 +16,22 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* --- ENDÜSTRİ STANDARDI YUMUŞAK ANİMASYONLAR --- */
+        /* --- SİNEMATİK VE ÇOK YAVAŞ ANİMASYONLAR --- */
         
-        /* 1. Hızlıca Görünme (Fade In) - Başlıklar ve Fotoğraflar için */
-        .anim-fade-fast { opacity: 0; transition: opacity 0.8s ease-out; }
+        /* 1. Yavaşça Görünme (Fade In) */
+        .anim-fade-fast { opacity: 0; transition: opacity 1.8s ease-out; }
         
-        /* 2. Gecikmeli Yumuşak Çıkış - Alt Başlık için */
-        .anim-fade-delayed { opacity: 0; transform: translateY(15px); transition: all 0.8s ease-out 0.4s; }
+        /* 2. Ekstra Gecikmeli Yumuşak Çıkış - Alt Başlık için */
+        .anim-fade-delayed { opacity: 0; transform: translateY(10px); transition: all 1.8s ease-out 0.8s; }
 
-        /* 3. Soldan Sağa Açılma (Wipe Effect) - Hakkımda Yazısı için */
-        .anim-wipe { clip-path: inset(0 100% 0 0); transition: clip-path 1.2s cubic-bezier(0.25, 1, 0.5, 1) 0.2s; }
+        /* 3. Çok Yavaş Soldan Sağa Açılma (Wipe Effect) */
+        .anim-wipe { clip-path: inset(0 100% 0 0); transition: clip-path 2.5s cubic-bezier(0.25, 1, 0.5, 1) 0.5s; }
 
-        /* 4. Opak Olarak Kayarak Gelme (Menü Kartları) */
-        .anim-slide-card { transform: translateX(-40px); opacity: 1; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        /* 4. Yavaşça Kayarak Gelme (Menü Kartları) */
+        .anim-slide-card { transform: translateX(-30px); opacity: 1; transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
 
-        /* 5. Opak Olarak Aşağıdan Formun Gelmesi (Sipariş Bloğu) */
-        .anim-slide-up-solid { transform: translateY(60px); opacity: 1; transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s; }
+        /* 5. Yavaşça Aşağıdan Gelmesi (Sipariş Bloğu) */
+        .anim-slide-up-solid { transform: translateY(40px); opacity: 1; transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s; }
 
         /* EKRANA GİRDİĞİNDE DEVREYE GİRECEK TETİKLEYİCİLER */
         .ekranda .anim-fade-fast { opacity: 1; }
@@ -44,9 +44,9 @@
 
 <body class="font-sans antialiased text-gray-800 m-0 overflow-hidden h-screen bg-gray-100" onload="sayfaYuklendi()">
 
-    <main class="h-screen w-full overflow-y-scroll snap-y snap-mandatory scroll-smooth no-scrollbar">
+    <main class="h-screen w-full overflow-y-auto snap-y snap-proximity scroll-smooth no-scrollbar">
 
-        <section id="hosgeldiniz" class="min-h-screen w-full snap-center snap-always bg-gulKurusu flex flex-col justify-center items-center p-8 text-center relative overflow-hidden gorsel-section">
+        <section id="hosgeldiniz" class="min-h-screen w-full snap-start bg-gulKurusu flex flex-col justify-center items-center py-20 px-8 text-center relative overflow-hidden gorsel-section">
             <div class="absolute top-6 right-8 flex gap-4 font-bold text-gray-700 z-10">
                 <button onclick="diliDegistir('tr')" class="hover:text-turuncu transition">TR</button>
                 <button onclick="diliDegistir('en')" class="hover:text-turuncu transition">EN</button>
@@ -65,19 +65,19 @@
             <a href="#hakkimda" data-i18n="asagi_kaydir" class="mt-8 text-turuncu font-bold text-lg animate-bounce">Aşağı Kaydır ↓</a>
         </section>
 
-        <section id="hakkimda" class="min-h-screen w-full snap-center snap-always bg-tasGrisi flex flex-col justify-center items-center p-8 text-center gorsel-section overflow-hidden">
+        <section id="hakkimda" class="min-h-screen w-full snap-start bg-tasGrisi flex flex-col justify-center items-center py-20 px-8 text-center gorsel-section overflow-hidden">
             <h2 data-i18n="ben_kimim" class="anim-fade-fast text-4xl md:text-5xl font-bold mb-8 text-white">Ben Kimim?</h2>
             
             <p id="dinamik_hakkimda" class="anim-wipe text-lg md:text-xl max-w-3xl leading-relaxed text-gray-100">Yükleniyor...</p>
             <div id="bizKimizFotoAlani" class="anim-fade-fast mt-12 max-w-3xl w-full"></div>
         </section>
 
-        <section id="menu" class="min-h-screen w-full snap-center snap-always bg-adacayi flex flex-col justify-center items-center p-8 gorsel-section overflow-hidden">
+        <section id="menu" class="min-h-screen w-full snap-start bg-adacayi flex flex-col justify-start items-center py-20 px-8 gorsel-section overflow-hidden">
             <h2 data-i18n="menumuz" class="anim-fade-fast text-4xl md:text-5xl font-bold mb-12 text-white">Menümüz</h2>
-            <div id="dinamikMenuAlani" class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl"></div>
+            <div id="dinamikMenuAlani" class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl pb-12"></div>
         </section>
 
-        <section id="siparis" class="min-h-screen w-full snap-center snap-always bg-turuncu flex flex-col justify-center items-center p-8 gorsel-section overflow-hidden">
+        <section id="siparis" class="min-h-screen w-full snap-start bg-turuncu flex flex-col justify-start items-center py-20 px-8 gorsel-section overflow-hidden">
             <h2 data-i18n="siparis_olustur" class="anim-fade-fast text-4xl md:text-5xl font-bold mb-8 text-white">Sipariş Oluştur</h2>
 
             <form id="siparisFormu" class="anim-slide-up-solid w-full max-w-2xl bg-white p-8 rounded-2xl shadow-2xl flex flex-col gap-4">
@@ -91,7 +91,7 @@
                 <button type="button" onclick="siparisiGonder()" data-i18n="gonder_buton" class="mt-4 bg-turuncu text-white font-bold py-4 rounded-lg hover:bg-orange-600">Siparişi Gönder</button>
             </form>
 
-            <div class="mt-12 text-center text-white z-10">
+            <div class="mt-12 text-center text-white z-10 pb-12">
                 <h3 data-i18n="iletisim" class="text-2xl font-bold mb-2">İletişim</h3>
                 <p class="text-xl font-semibold">Aslıhan Şahin</p>
                 <p class="text-lg mt-1 font-bold"> <a id="dinamik_telefon" href="#" class="hover:text-gray-200 underline decoration-dashed transition">Yükleniyor...</a></p>
@@ -153,7 +153,7 @@
                     if (girdi.isIntersecting) girdi.target.classList.add('ekranda');
                     else girdi.target.classList.remove('ekranda');
                 });
-            }, { threshold: 0.3 });
+            }, { threshold: 0.15 }); // %15 görününce tetikle (daha erken başlasın)
             document.querySelectorAll('.gorsel-section').forEach(sec => gozlemci.observe(sec));
         }
 
@@ -178,7 +178,7 @@
                 const baslik = m[`baslik_${aktifDil}`]; const icerik = m[`icerik_${aktifDil}`];
                 if (!baslik || !icerik) return;
                 alan.innerHTML += `
-                    <div class="anim-slide-card bg-white p-6 rounded-xl shadow-lg" style="transition-delay: ${index * 0.15}s">
+                    <div class="anim-slide-card bg-white p-6 rounded-xl shadow-lg" style="transition-delay: ${index * 0.25}s">
                         <h3 class="text-2xl font-bold text-turuncu mb-4">${baslik}</h3>
                         <ul class="space-y-2">${icerik.map(y => `<li>${y}</li>`).join('')}</ul>
                     </div>`;
@@ -190,7 +190,6 @@
             document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = s[el.getAttribute('data-i18n')]);
             document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = s[el.getAttribute('data-i18n-ph')]);
 
-            // DİNAMİK ALANLAR (Ana Başlık, Alt Başlık, Hakkımda ve Telefon)
             document.getElementById('dinamik_ana_baslik').textContent = siteAyarlari[`ana_baslik_${dilKodu}`] || "Başlık Yükleniyor...";
             document.getElementById('dinamik_alt_baslik').textContent = siteAyarlari[`alt_baslik_${dilKodu}`] || "Alt başlık yükleniyor...";
             document.getElementById('dinamik_hakkimda').textContent = siteAyarlari[`hakkimda_${dilKodu}`] || "Metin yükleniyor...";
