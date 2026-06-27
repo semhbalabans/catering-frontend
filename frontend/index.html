@@ -16,25 +16,23 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* --- PREMİUM / ÇOK YAVAŞ ANİMASYONLAR --- */
+        /* --- PREMİUM / YUMUŞATILMIŞ ANİMASYONLAR --- */
         
-        /* 1. Çok Yavaş Yazı Görünümü (3 Saniye) */
-        .anim-fade-text { opacity: 0; transition: opacity 3s ease-out; }
-        .anim-fade-text-delayed { opacity: 0; transform: translateY(10px); transition: all 3s ease-out 0.5s; }
+        /* 1. Ana Başlık Görünümü */
+        .anim-fade-text { opacity: 0; transition: opacity 2.5s ease-out; }
 
-        /* 2. Çok Yavaş Fotoğraf Görünümü (3.5 Saniye) */
-        .anim-fade-image { opacity: 0; filter: blur(4px); transition: opacity 3.5s ease-out, filter 1s ease-out; }
+        /* 2. Fotoğraf Blur Efekti Hızlandırıldı (1.5 Saniye) */
+        .anim-fade-image { opacity: 0; filter: blur(4px); transition: opacity 1.5s ease-out, filter 1.5s ease-out; }
 
-        /* 3. Çok Yavaş Blok Kayması (2.5 Saniye) */
-        .anim-slide-card { transform: translateX(-30px); opacity: 0; transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1), opacity 2.5s ease-out; }
-        .anim-slide-up-solid { transform: translateY(40px); opacity: 0; transition: transform 2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, opacity 2.5s ease-out 0.3s; }
+        /* 3. Blokların Yavaşça Kayması (2.5 Saniye) */
+        .anim-slide-card { transform: translateX(-30px); opacity: 0; transition: transform 2.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 2.5s ease-out; }
+        .anim-slide-up-solid { transform: translateY(40px); opacity: 0; transition: transform 2.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s, opacity 2.5s ease-out 0.3s; }
 
-        /* 4. Kelime Kelime Çıkış İçin CSS Altyapısı */
+        /* 4. Kelime Kelime Çıkış İçin CSS Altyapısı (Hakkımda ve Alt Başlık için) */
         .word-wrap span { display: inline-block; opacity: 0; transform: translateX(-10px); transition: opacity 1.5s ease-out, transform 1.5s ease-out; }
 
         /* --- EKRANA GİRDİĞİNDE TETİKLENENLER --- */
         .ekranda .anim-fade-text { opacity: 1; }
-        .ekranda .anim-fade-text-delayed { opacity: 1; transform: translateY(0); }
         .ekranda .anim-fade-image { opacity: 1; filter: blur(0); }
         .ekranda .anim-slide-card { transform: translateX(0); opacity: 1; }
         .ekranda .anim-slide-up-solid { transform: translateY(0); opacity: 1; }
@@ -46,6 +44,7 @@
 
     <main class="h-screen w-full overflow-y-auto snap-y snap-mandatory scroll-smooth no-scrollbar">
 
+        <!-- SECTION 1: HOŞGELDİNİZ -->
         <section id="hosgeldiniz" class="min-h-screen w-full snap-start bg-gulKurusu flex flex-col justify-center items-center py-20 px-8 text-center relative overflow-hidden gorsel-section">
             <div class="absolute top-6 right-8 flex gap-4 font-bold text-gray-700 z-10">
                 <button onclick="diliDegistir('tr')" class="hover:text-turuncu transition">TR</button>
@@ -54,17 +53,20 @@
             </div>
 
             <h1 id="dinamik_ana_baslik" class="anim-fade-text text-5xl md:text-7xl font-bold mb-6 text-gray-900 mt-12">Yükleniyor...</h1>
-            <p id="dinamik_alt_baslik" class="anim-fade-text-delayed text-xl md:text-2xl mb-8 max-w-2xl">Yükleniyor...</p>
+            <!-- Alt başlığa word-wrap eklendi -->
+            <p id="dinamik_alt_baslik" class="word-wrap text-xl md:text-2xl mb-8 max-w-2xl">Yükleniyor...</p>
 
             <div class="anim-fade-image relative w-full max-w-4xl h-64 md:h-96 group">
                 <button onclick="sliderKaydir(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-turuncu rounded-full w-12 h-12 flex items-center justify-center z-20 shadow-lg text-xl font-bold transition">❮</button>
-                <div id="sliderAlani" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar w-full h-full rounded-2xl shadow-xl bg-gray-300 relative z-10"></div>
+                <!-- bg-gray-300 gri çerçeve engellemek için silindi -->
+                <div id="sliderAlani" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar w-full h-full rounded-2xl shadow-xl relative z-10"></div>
                 <button onclick="sliderKaydir(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-turuncu rounded-full w-12 h-12 flex items-center justify-center z-20 shadow-lg text-xl font-bold transition">❯</button>
             </div>
 
             <a href="#hakkimda" data-i18n="asagi_kaydir" class="mt-8 text-turuncu font-bold text-lg animate-bounce">Aşağı Kaydır ↓</a>
         </section>
 
+        <!-- SECTION 2: HAKKIMDA -->
         <section id="hakkimda" class="min-h-screen w-full snap-start bg-tasGrisi flex flex-col justify-center items-center py-20 px-8 text-center gorsel-section overflow-hidden">
             <h2 data-i18n="ben_kimim" class="anim-fade-text text-4xl md:text-5xl font-bold mb-8 text-white">Ben Kimim?</h2>
             
@@ -72,11 +74,13 @@
             <div id="bizKimizFotoAlani" class="anim-fade-image mt-12 max-w-3xl w-full"></div>
         </section>
 
+        <!-- SECTION 3: MENÜ -->
         <section id="menu" class="min-h-screen w-full snap-start bg-adacayi flex flex-col justify-start items-center py-20 px-8 gorsel-section overflow-hidden">
             <h2 data-i18n="menumuz" class="anim-fade-text text-4xl md:text-5xl font-bold mb-12 text-white">Menümüz</h2>
             <div id="dinamikMenuAlani" class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-5xl pb-12"></div>
         </section>
 
+        <!-- SECTION 4: SİPARİŞ -->
         <section id="siparis" class="min-h-screen w-full snap-start bg-turuncu flex flex-col justify-start items-center py-20 px-8 gorsel-section overflow-hidden">
             <h2 data-i18n="siparis_olustur" class="anim-fade-text text-4xl md:text-5xl font-bold mb-8 text-white">Sipariş Oluştur</h2>
 
@@ -150,7 +154,6 @@
         function animasyonGozlemcisiniBaslat() {
             const gozlemci = new IntersectionObserver((girdiler) => {
                 girdiler.forEach(girdi => {
-                    // Yüzde 30'u göründüğünde kilitlenmeyi ve animasyonları başlat
                     if (girdi.isIntersecting) girdi.target.classList.add('ekranda');
                     else girdi.target.classList.remove('ekranda');
                 });
@@ -164,7 +167,8 @@
             const alan = document.getElementById("sliderAlani");
             if (fotolar.length === 0) return alan.innerHTML = `<div class="w-full h-full flex items-center justify-center text-gray-500 snap-center shrink-0">Slider Görseli Yok</div>`;
             alan.innerHTML = "";
-            fotolar.forEach(f => alan.innerHTML += `<img src="${f.url}" class="snap-center shrink-0 w-full h-full object-contain">`);
+            // object-contain yerine object-cover kullanılarak çerçeveye tam oturması sağlandı
+            fotolar.forEach(f => alan.innerHTML += `<img src="${f.url}" class="snap-center shrink-0 w-full h-full object-cover">`);
         }
 
         function bizKimizFotolariCiz(fotolar) {
@@ -192,19 +196,22 @@
             document.querySelectorAll('[data-i18n-ph]').forEach(el => el.placeholder = s[el.getAttribute('data-i18n-ph')]);
 
             document.getElementById('dinamik_ana_baslik').textContent = siteAyarlari[`ana_baslik_${dilKodu}`] || "Başlık Yükleniyor...";
-            document.getElementById('dinamik_alt_baslik').textContent = siteAyarlari[`alt_baslik_${dilKodu}`] || "Alt başlık yükleniyor...";
             
-            // --- KELİME KELİME YÜKLEME MANTIĞI ---
+            // --- ALT BAŞLIK KELİME KELİME YÜKLEME ---
+            const altBaslikMetin = siteAyarlari[`alt_baslik_${dilKodu}`] || "Alt başlık yükleniyor...";
+            const altBaslikKelimeler = altBaslikMetin.split(" ");
+            const altBaslikHTML = altBaslikKelimeler.map((kelime, index) => {
+                return `<span style="transition-delay: ${0.5 + (index * 0.08)}s">${kelime}</span> `;
+            }).join("");
+            document.getElementById('dinamik_alt_baslik').innerHTML = altBaslikHTML;
+
+            // --- HAKKIMDA KELİME KELİME YÜKLEME ---
             const hakkimdaMetin = siteAyarlari[`hakkimda_${dilKodu}`] || "Metin yükleniyor...";
             const kelimeler = hakkimdaMetin.split(" ");
-            
-            // Her kelimeyi ayrı bir span içine alıp sırayla gecikme (delay) veriyoruz
             const kelimeHTML = kelimeler.map((kelime, index) => {
                 return `<span style="transition-delay: ${0.3 + (index * 0.08)}s">${kelime}</span> `;
             }).join("");
-            
             document.getElementById('dinamik_hakkimda').innerHTML = kelimeHTML;
-            // ------------------------------------
 
             const num = siteAyarlari.telefon || "+31 6 00000000";
             document.getElementById('dinamik_telefon').textContent = num;
